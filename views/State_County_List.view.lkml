@@ -10,7 +10,7 @@ state, county FROM `dil-demo-352614.hcc_prevalence.hcc_by_county_diabetes` ;;
 
   dimension: state {
     type: string
-    sql: ${TABLE}.State ;;
+    sql: ${TABLE}.state ;;
   }
 
   dimension: county {

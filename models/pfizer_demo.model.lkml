@@ -25,11 +25,20 @@ persist_with: pfizer_demo_default_datagroup
 # Typically, join parameters require that you define the join type, join relationship, and a sql_on clause.
 # Each joined view also needs to define a primary key.
 
-explore: state_county_list {
+explore: diabetes {
+  view_name: state_county_list
   join: hcc_by_county_diabetes {
     type: left_outer
     relationship: one_to_many
-    sql_on:  ${state_county_list.state}=${hcc_by_county_diabetes.state}= ;;
+    sql_on:  ${state_county_list.state}=${hcc_by_county_diabetes.state}
+    and ${state_county_list.county}= ${hcc_by_county_diabetes.county};;
+  }
+
+  join: proc_by_county_18 {
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${state_county_list.county}= ${proc_by_county_18.county}
+    and ${state_county_list.state}= ${hcc_by_county_diabetes.state};;
   }
 }
 

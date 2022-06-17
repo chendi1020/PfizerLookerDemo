@@ -52,6 +52,12 @@ where HCC  <> 'HCC18' ;;
   dimension: hcc_description {
     type: string
     sql: ${TABLE}.HCC_Description ;;
+    link: {
+      label: "Trend View"
+      icon_url: "https://www.zilliondesigns.com/images/portfolio/healthcare-hospital/iStock-471629610-Converted.png"
+      url: "https://mathematica.cloud.looker.com/dashboards/32?Hcc+Description={{ filterable_value | url_encode}}&State={{ _filters['hcc_by_county_diabetes.state'] | url_encode }}&County={{ _filters['hcc_by_county_diabetes.county'] | url_encode }}"
+
+    }
   }
 
   dimension: num_benes {
