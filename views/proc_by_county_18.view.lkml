@@ -23,6 +23,7 @@ view: proc_by_county_18 {
   measure: total_benes_with_proc {
     type: sum
     sql: ${benes_with_proc} ;;
+
   }
 
   measure: average_benes_with_proc {
@@ -53,6 +54,7 @@ view: proc_by_county_18 {
   dimension: proc_category {
     type: string
     sql: ${TABLE}.proc_category ;;
+    drill_fields: [proc_description]
   }
 
   dimension: proc_description {
