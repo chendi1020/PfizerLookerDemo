@@ -2,10 +2,13 @@ view: state_county_list {
   # # You can specify the table name if it's different from the view name:
   # sql_table_name: my_schema_name.tester ;;
   derived_table: {
-  sql: SELECT distinct state, county FROM `dil-demo-352614.hcc_prevalence.proc_by_county_18`
-union distinct
-select distinct
-state, county FROM `dil-demo-352614.hcc_prevalence.hcc_by_county_diabetes` ;;
+#   sql: SELECT distinct state, county FROM `dil-demo-352614.hcc_prevalence.proc_by_county_18`
+# union distinct
+# select distinct
+# state, county FROM `dil-demo-352614.hcc_prevalence.hcc_by_county_diabetes` ;;
+sql: select
+State, County, min(COUNTY_CD) as min_county_cd FROM `dil-demo-352614.hcc_prevalence.hcc_by_county_diabetes`
+group by State, County ;;
   }
 
   dimension: state {
@@ -16,6 +19,11 @@ state, county FROM `dil-demo-352614.hcc_prevalence.hcc_by_county_diabetes` ;;
   dimension: county {
     type: string
     sql: ${TABLE}.county ;;
+  }
+
+  dimension: min_county_cd {
+    type: number
+    sql: ${TABLE}.min_county_cd ;;
   }
   # # Define your dimensions and measures here, like this:
   # dimension: user_id {
