@@ -84,6 +84,11 @@ UNPIVOT(value FOR attribute IN (TOT_MDCR_STDZD_PYMT_AMT ,IP_MDCR_STDZD_PYMT_AMT,
     sql: ${value} ;;
   }
 
+  measure: total_value {
+    type: sum
+    sql: ${value} ;;
+  }
+
   measure: count {
     type: count
     drill_fields: []
