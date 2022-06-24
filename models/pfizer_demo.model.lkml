@@ -40,6 +40,14 @@ explore: diabetes {
     sql_on: ${state_county_list.county}= ${proc_by_county_18.county}
     and ${state_county_list.state}= ${hcc_by_county_diabetes.state};;
   }
+
+  join: geo_puf {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${state_county_list.state}=${geo_puf.state}
+    and ${state_county_list.county}= ${geo_puf.county}
+    and ${hcc_by_county_diabetes.year}= ${geo_puf.year};;
+  }
 }
 
 explore: hcc_by_county_diabetes {}
