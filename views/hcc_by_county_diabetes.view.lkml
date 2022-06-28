@@ -82,6 +82,7 @@ where HCC  <> 'HCC18' ;;
 
   dimension: year {
     type: number
+    value_format: "0"
     sql: ${TABLE}.year ;;
   }
 
