@@ -1303,6 +1303,7 @@ view: geo_puf_wide {
   dimension: year {
     type: number
     sql: ${TABLE}.YEAR ;;
+    value_format: "0"
   }
 
   measure: count {

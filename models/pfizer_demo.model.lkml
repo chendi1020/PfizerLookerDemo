@@ -58,11 +58,43 @@ explore: diabetes {
   }
 }
 
-explore: hcc_by_county_diabetes {}
+explore: geo_puf_wide {
+  join: state_county_list {
+    type: inner
+    relationship: many_to_one
+    sql_on: ${geo_puf_wide.state}=${state_county_list.state}
+    and ${geo_puf_wide.county}= ${state_county_list.county};;
+  }
 
-
-explore: hcc_by_state_diabetes {}
-
-explore: proc_by_county {
-  view_name: proc_by_county_18
+  join: geo_puf {
+    type: inner
+    relationship: one_to_many
+    sql_on: ${geo_puf_wide.state}=${geo_puf.state}
+    and ${geo_puf_wide.county}= ${geo_puf.county}
+    and ${geo_puf_wide.year}= ${geo_puf.year};;
+  }
 }
+
+explore: hcc_all {
+  join: state_county_list {
+    type: inner
+    relationship: many_to_one
+    sql_on: ${hcc_all.state}= ${state_county_list.state}
+    and ${hcc_all.county}= ${state_county_list.county};;
+  }
+}
+
+explore: betos {
+  join: state_county_list {
+    type: inner
+    relationship: many_to_one
+    sql_on: ${betos.state}= ${state_county_list.state}
+    and ${betos.county}=  ${state_county_list.county};;
+  }
+}
+
+# explore: hcc_by_state_diabetes {}
+
+# explore: proc_by_county {
+#   view_name: proc_by_county_18
+# }

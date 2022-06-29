@@ -6,9 +6,9 @@ view: state_county_list {
 # union distinct
 # select distinct
 # state, county FROM `dil-demo-352614.hcc_prevalence.hcc_by_county_diabetes` ;;
-sql: select
-State, County, min(COUNTY_CD) as min_county_cd FROM `dil-demo-352614.hcc_prevalence.hcc_by_county_diabetes`
-group by State, County ;;
+sql: select state, County
+from `dil-demo-352614.hcc_prevalence.hcc_all`
+group by state, county ;;
   }
 
   dimension: state {
@@ -21,10 +21,7 @@ group by State, County ;;
     sql: ${TABLE}.county ;;
   }
 
-  dimension: min_county_cd {
-    type: number
-    sql: ${TABLE}.min_county_cd ;;
-  }
+
   # # Define your dimensions and measures here, like this:
   # dimension: user_id {
   #   description: "Unique ID for each user that has ordered"
