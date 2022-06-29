@@ -2,12 +2,24 @@
 view: hcc_all {
   # The sql_table_name parameter indicates the underlying database table
   # to be used for all fields in this view.
-#   derived_table: {
-#     sql: select STATE_CODE, County,state, FIPS, Year, payer, hcc, HCC_Description, BENE_CNT, sum(benes_w_dx) as benes_w_dx, sum(case when benes_with_hcc =' ' then NULL else cast(benes_with_hcc as float64) end) as benes_with_hcc
-# from `dil-demo-352614.hcc_prevalence.hcc_all`
-# group by STATE_CODE, County,state, FIPS, Year, payer, hcc, HCC_Description, BENE_CNT ;;
-#   }
-sql_table_name:`dil-demo-352614.hcc_prevalence.hcc_all` ;;
+  derived_table: {
+    sql:
+select * ,'Overall' as type
+from `dil-demo-352614.hcc_prevalence.hcc_all`
+union all
+select *, 'COPD' as type
+from `dil-demo-352614.hcc_prevalence.hcc_111`
+where hcc <> 'HCC111'
+union all
+select *, 'Diabetes' as type
+from `dil-demo-352614.hcc_prevalence.hcc_18`
+where hcc <> 'HCC18'
+union all
+select *, 'Congestive Heart Failure' as type
+from `dil-demo-352614.hcc_prevalence.hcc_85`
+where hcc <> 'HCC85';;
+  }
+#sql_table_name:`dil-demo-352614.hcc_prevalence.hcc_all` ;;
   # No primary key is defined for this view. In order to join this view in an Explore,
   # define primary_key: yes on a dimension that has no repeated values.
 
@@ -18,6 +30,11 @@ sql_table_name:`dil-demo-352614.hcc_prevalence.hcc_all` ;;
   dimension: bene_cnt {
     type: number
     sql: ${TABLE}.BENE_CNT ;;
+  }
+
+  dimension: type {
+    type: string
+    sql: ${TABLE}.type ;;
   }
 
   # A measure is a field that uses a SQL aggregate function. Here are defined sum and average
@@ -55,8 +72,9 @@ sql_table_name:`dil-demo-352614.hcc_prevalence.hcc_all` ;;
   }
 
   measure: hcc_prevalence {
-    type: sum
-    sql: ${benes_with_hcc}/${benes_w_dx} *1000;;
+    value_format: "0.00"
+    type: number
+    sql: ${benes_with_hcc_sum}/${benes_w_dx_sum} *1000;;
   }
 
   dimension: county {
@@ -87,7 +105,7 @@ sql_table_name:`dil-demo-352614.hcc_prevalence.hcc_all` ;;
     link: {
       label: "Top 50 Counties with higest HCC prevalence rate"
       icon_url: "https://www.zilliondesigns.com/images/portfolio/healthcare-hospital/iStock-471629610-Converted.png"
-      url: "https://mathematica.cloud.looker.com/dashboards/32?Hcc+Description={{ filterable_value | url_encode}}&Year={{ _filters['hcc_all.year'] | url_encode }}"
+      url: "https://mathematica.cloud.looker.com/dashboards/32?Hcc+Description={{ filterable_value | url_encode}}&Year={{ _filters['hcc_all.year'] | url_encode }}&Type={{ _filters['hcc_all.type'] | url_encode }}"
 
     }
   }
@@ -115,7 +133,7 @@ sql_table_name:`dil-demo-352614.hcc_prevalence.hcc_all` ;;
 
   dimension: pk_hcc_all {
     type: string
-    sql: ${year} || ${state} || ${county} || ${hcc} || ${payer};;
+    sql: ${year} || ${state} || ${county} || ${hcc} || ${payer} || ${type};;
     primary_key: yes
   }
 

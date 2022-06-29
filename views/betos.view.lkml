@@ -81,24 +81,25 @@ sql_table_name:  `dil-demo-352614.hcc_prevalence.betos`;;
     sql: ${TABLE}.num_lines ;;
   }
 
-  measure: prevalence_line {
-    type: sum
-    sql: ${lines_with_proc}/${num_lines} *1000;;
-    value_format: "0.0"
-    drill_fields: [payer,  prevalence_line]
-
-  }
 
   measure: prevalence_bene {
-    type: sum
-    value_format: "0.0"
-    sql: ${benes_with_proc}/${benes_with_any_proc} *1000;;
+    type: number
+    sql: ${benes_with_proc_sum}/${benes_with_any_proc_sum} *1000;;
+    value_format: "0.00"
     drill_fields: [payer,  prevalence_bene]
   }
 
   measure: num_lines_sum {
     type: sum
     sql: ${num_lines} ;;
+  }
+
+  measure: prevalence_line {
+    type: number
+    sql: ( ${lines_with_proc_sum}/${num_lines_sum} )*1000;;
+    value_format: "0.00"
+    drill_fields: [payer,  prevalence_line]
+
   }
 
   dimension: payer {
