@@ -128,6 +128,7 @@ BENE_RACE_OTHR_PCT,ACUTE_HOSP_READMSN_PCT,TOT_MDCR_STDZD_PYMT_PC,PTB_DRUGS_MDCR_
     type: sum
     label: "value"
     sql: ${value} ;;
+    drill_fields: [state, county, value_total]
   }
 
   measure: total_value {
