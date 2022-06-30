@@ -93,6 +93,16 @@ explore: betos {
   }
 }
 
+explore: ssp_exp_rs {
+  join: state_county_list {
+    type: inner
+    relationship: many_to_one
+    sql_on: ${state_county_list.state}=${ssp_exp_rs.State}
+    and ${state_county_list.county}= ${ssp_exp_rs.County}
+    ;;
+  }
+}
+
 # explore: hcc_by_state_diabetes {}
 
 # explore: proc_by_county {
