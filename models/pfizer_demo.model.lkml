@@ -80,7 +80,9 @@ explore: hcc_all {
     type: inner
     relationship: many_to_one
     sql_on: ${hcc_all.state}= ${state_county_list.state}
-    and ${hcc_all.county}= ${state_county_list.county};;
+    and ${hcc_all.county}= ${state_county_list.county}
+    and ${hcc_all.state} <> 'PR'
+    ;;
   }
 }
 
@@ -89,7 +91,9 @@ explore: betos {
     type: inner
     relationship: many_to_one
     sql_on: ${betos.state}= ${state_county_list.state}
-    and ${betos.county}=  ${state_county_list.county};;
+    and ${betos.county}=  ${state_county_list.county}
+    and ${betos.state} <> 'PR'
+    ;;
   }
 }
 
@@ -99,6 +103,7 @@ explore: ssp_exp_rs {
     relationship: many_to_one
     sql_on: ${state_county_list.state}=${ssp_exp_rs.State}
     and ${state_county_list.county}= ${ssp_exp_rs.County}
+    and ${ssp_exp_rs.State}<>'PR'
     ;;
   }
 }

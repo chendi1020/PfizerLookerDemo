@@ -102,12 +102,12 @@ where hcc <> 'HCC85';;
   dimension: hcc_description {
     type: string
     sql: ${TABLE}.HCC_Description ;;
-    link: {
-      label: "Top 50 Counties with higest HCC prevalence rate"
-      icon_url: "https://www.zilliondesigns.com/images/portfolio/healthcare-hospital/iStock-471629610-Converted.png"
-      url: "https://mathematica.cloud.looker.com/dashboards/32?Hcc+Description={{ filterable_value | url_encode}}&Year={{ _filters['hcc_all.year'] | url_encode }}&Type={{ _filters['hcc_all.type'] | url_encode }}"
+    # link: {
+    #   label: "Top 50 Counties with higest HCC prevalence rate"
+    #   icon_url: "https://www.zilliondesigns.com/images/portfolio/healthcare-hospital/iStock-471629610-Converted.png"
+    #   url: "https://mathematica.cloud.looker.com/dashboards/32?Hcc+Description={{ filterable_value | url_encode}}&Year={{ _filters['hcc_all.year'] | url_encode }}&Type={{ _filters['hcc_all.type'] | url_encode }}"
 
-    }
+    # }
   }
 
   dimension: payer {
