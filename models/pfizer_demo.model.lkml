@@ -57,6 +57,13 @@ explore: diabetes {
           and ${hcc_by_county_diabetes.year}= ${geo_puf_wide.year};;
   }
 
+  join: geo_puf_wide_select {
+    type: left_outer
+    relationship: many_to_many
+    sql_on:
+          ${hcc_by_county_diabetes.year}= ${geo_puf_wide_select.year};;
+  }
+
 
 }
 

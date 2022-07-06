@@ -1,5 +1,5 @@
 # The name of this view in Looker is "Geo Puf"
-view: geo_puf_wide {
+view: geo_puf_wide_select {
   # The sql_table_name parameter indicates the underlying database table
   # to be used for all fields in this view.
   sql_table_name: `dil-demo-352614.hcc_prevalence.geo_puf`
@@ -24,7 +24,7 @@ view: geo_puf_wide {
 
   dimension: acute_hosp_readmsn_pct_bucket  {
 
-  sql: round((ROUND(${acute_hosp_readmsn_pct}/0.01, 0) * 0.01    ) ,2)  ||'-'||  round((  ROUND(${acute_hosp_readmsn_pct}/ 0.01, 0) * 0.01+ 0.01  )  ,2)                ;;
+    sql: round((ROUND(${acute_hosp_readmsn_pct}/0.01, 0) * 0.01    ) ,2)  ||'-'||  round((  ROUND(${acute_hosp_readmsn_pct}/ 0.01, 0) * 0.01+ 0.01  )  ,2)            ;;
     order_by_field:acute_hosp_readmsn_pct_bucket_sort
 
   }
@@ -34,7 +34,6 @@ view: geo_puf_wide {
     hidden: no
 
   }
-
 
   dimension: amblnc_evnts_per_1000_benes {
     type: number
@@ -501,22 +500,22 @@ view: geo_puf_wide {
     sql: ${TABLE}.ER_VISITS_PER_1000_BENES ;;
   }
 
+    dimension: er_visits_per_1000_benes_bucket  {
+
+      sql: (ROUND(${er_visits_per_1000_benes}/10, 0) * 10    )   ||'-'||(  ROUND(${er_visits_per_1000_benes}/ 10, 0) * 10 + 10  )              ;;
+      order_by_field:er_visits_per_1000_benes_bucket_sort
+
+    }
+    dimension: er_visits_per_1000_benes_bucket_sort {
+      sql:   ROUND(${er_visits_per_1000_benes}/10, 0) * 10;;
+      type: number
+      hidden: no
+
+    }
+
   measure: total_er_visits_per_1000_benes {
     type: sum
     sql: ${er_visits_per_1000_benes} ;;
-  }
-
-  dimension: er_visits_per_1000_benes_bucket  {
-
-    sql: (ROUND(${er_visits_per_1000_benes}/10, 0) * 10    )   ||'-'||(  ROUND(${er_visits_per_1000_benes}/ 10, 0) * 10 + 10  )              ;;
-    order_by_field:er_visits_per_1000_benes_bucket_sort
-
-  }
-  dimension: er_visits_per_1000_benes_bucket_sort {
-    sql:   ROUND(${er_visits_per_1000_benes}/10, 0) * 10;;
-    type: number
-    hidden: no
-
   }
 
   dimension: fqhc_rhc_mdcr_pymt_amt {
@@ -681,6 +680,7 @@ view: geo_puf_wide {
     hidden: no
 
   }
+
 
   measure: total_imgng_evnts_per_1000_benes {
     type: sum
@@ -1192,6 +1192,8 @@ view: geo_puf_wide {
 
   }
 
+
+
   dimension: ptb_drugs_mdcr_stdzd_pymt_pct {
     type: number
     sql: ${TABLE}.PTB_DRUGS_MDCR_STDZD_PYMT_PCT ;;
@@ -1337,7 +1339,7 @@ view: geo_puf_wide {
 
     sql: (ROUND(${tot_mdcr_stdzd_pymt_pc}/500, 0) * 500    )   ||'-'||(  ROUND(${tot_mdcr_stdzd_pymt_pc}/ 500, 0) * 500 + 500   )
 
-      ;;
+            ;;
     order_by_field: tot_mdcr_stdzd_pymt_pc_bucket_sort
 
   }
@@ -1389,6 +1391,32 @@ view: geo_puf_wide {
   measure: count {
     type: count
     drill_fields: []
+  }
+
+dimension: samebuck {
+  type: string
+  sql: case when ${geo_puf_wide.tot_mdcr_stdzd_pymt_pc_bucket}= ${geo_puf_wide_select.tot_mdcr_stdzd_pymt_pc_bucket}  then ${geo_puf_wide_select.county} else " Overall" end ;;
+}
+
+
+  dimension: samebuck_visit {
+    type: string
+    sql: case when ${geo_puf_wide.er_visits_per_1000_benes_bucket}= ${geo_puf_wide_select.er_visits_per_1000_benes_bucket}  then ${geo_puf_wide_select.county} else " Overall" end ;;
+  }
+
+  dimension: samebuck_img {
+    type: string
+    sql: case when ${geo_puf_wide.imgng_evnts_per_1000_benes_bucket}= ${geo_puf_wide_select.imgng_evnts_per_1000_benes_bucket}  then ${geo_puf_wide_select.county} else " Overall" end ;;
+  }
+
+  dimension: samebuck_readmsn {
+    type: string
+    sql: case when ${geo_puf_wide.acute_hosp_readmsn_pct_bucket}= ${geo_puf_wide_select.acute_hosp_readmsn_pct_bucket}  then ${geo_puf_wide_select.county} else " Overall" end ;;
+  }
+
+  dimension: samebuck_ptb {
+    type: string
+    sql: case when ${geo_puf_wide.ptb_drugs_mdcr_stdzd_pymt_pc_bucket}= ${geo_puf_wide_select.ptb_drugs_mdcr_stdzd_pymt_pc_bucket}  then ${geo_puf_wide_select.county} else " Overall" end ;;
   }
 
   dimension: primary_key {
