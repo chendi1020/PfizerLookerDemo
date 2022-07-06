@@ -56,6 +56,8 @@ explore: diabetes {
           and ${state_county_list.county}= ${geo_puf_wide.county}
           and ${hcc_by_county_diabetes.year}= ${geo_puf_wide.year};;
   }
+
+
 }
 
 explore: geo_puf_wide {

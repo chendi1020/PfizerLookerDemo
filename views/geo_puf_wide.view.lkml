@@ -1280,6 +1280,33 @@ view: geo_puf_wide {
     sql: ${TABLE}.TOT_MDCR_STDZD_PYMT_PC ;;
   }
 
+  dimension: tot_mdcr_stdzd_pymt_pc_bucket  {
+
+    sql: (ROUND(${tot_mdcr_stdzd_pymt_pc}/500, 0) * 500    )   ||'-'||(  ROUND(${tot_mdcr_stdzd_pymt_pc}/ 500, 0) * 500 + 500   )
+
+      ;;
+    order_by_field: tot_mdcr_stdzd_pymt_pc_bucket_sort
+
+  }
+  dimension: tot_mdcr_stdzd_pymt_pc_bucket_sort {
+
+    sql:
+
+      ROUND(${tot_mdcr_stdzd_pymt_pc}/500, 0) * 500;;
+
+    type: number
+
+    hidden: no
+
+  }
+
+  measure: tot_mdcr_stdzd_pymt_pc_sum {
+    type: sum
+    value_format: "$0.0,\" K\""
+    sql: ${tot_mdcr_stdzd_pymt_pc} ;;
+
+  }
+
   dimension: tot_mdcr_stdzd_ra_pymt_amt {
     type: number
     sql: ${TABLE}.TOT_MDCR_STDZD_RA_PYMT_AMT ;;
