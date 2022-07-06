@@ -21,6 +21,35 @@ group by state, county ;;
     sql: ${TABLE}.county ;;
   }
 
+ dimension: population_health {
+   type: string
+   sql:  "Population Health" ;;
+   link: {
+    label: "go to population health page"
+    url: "/dashboards/31?County=LOS+ANGELES&State=CA&Year=2018&Comorbidity+=Overall"
+  }
+ }
+
+  dimension: value_based_care {
+    type: string
+    sql:  "Value-based Care" ;;
+    link: {
+      label: "go to value-based care page"
+      url: "/dashboards/33?County=LOS%20ANGELES&State=CA"
+    }
+  }
+
+  dimension: SDOH {
+    type: string
+    sql:  "SDOH Equity (forthcoming)" ;;
+
+  }
+
+  dimension: real_word {
+    type: string
+    sql:  "Real World Evidence (forthcoming)" ;;
+
+  }
 
   # # Define your dimensions and measures here, like this:
   # dimension: user_id {
