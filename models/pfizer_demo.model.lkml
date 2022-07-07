@@ -117,6 +117,8 @@ explore: ssp_exp_rs {
   }
 }
 
+explore: enrollment_mcaid_mcare {}
+
 # explore: hcc_by_state_diabetes {}
 
 # explore: proc_by_county {
