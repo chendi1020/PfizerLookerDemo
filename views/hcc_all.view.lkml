@@ -136,7 +136,7 @@ where hcc <> 'HCC85';;
     link: {
       label: "Top 50 Counties with higest HCC cormorbidity prevalence rate"
       icon_url: "https://www.zilliondesigns.com/images/portfolio/healthcare-hospital/iStock-471629610-Converted.png"
-      url: "https://mathematica.cloud.looker.com/dashboards/32?Hcc+Description={{ filterable_value | url_encode}}&Year={{ _filters['hcc_all.year'] | url_encode }}&Comorbidity+Type={{ _filters['hcc_all.type'] | url_encode }}"
+      url: "https://mathematica.cloud.looker.com/dashboards/32?Hcc+Description={{ filterable_value | url_encode}}&Year={{ _filters['hcc_all.year'] | url_encode }}&Clinical+Cohorts={{ _filters['hcc_all.type'] | url_encode }}"
 
     }
   }
