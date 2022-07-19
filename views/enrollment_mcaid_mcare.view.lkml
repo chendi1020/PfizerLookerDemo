@@ -1,18 +1,20 @@
 view: enrollment_mcaid_mcare {
   derived_table: {
-    sql: SELECT year, state, value, attribute FROM (
-select a.*,b.tot_chip,b.tot_mcaid
+    sql:  SELECT year, state, value, attribute FROM (
+select a.*, cast(b.tot_chip as float64) as tot_chip, cast(b.tot_mcaid as float64) as tot_mcaid
 from (
-  select year,  state, sum(BENES_FFS_CNT) as BENES_FFS_CNT ,sum( BENES_MA_CNT) as BENES_MA_CNT
-  from `hcc_prevalence.geo_puf`
-  group by year, state
+  SELECT year, state,  max(TOT_BENES) as TOT_BENES,
+max(ORGNL_MDCR_BENES) as BENES_FFS_CNT,
+max(MA_AND_OTH_BENES) as BENES_MA_CNT
+ FROM `dil-demo-352614.hcc_prevalence.mcare_enroll`
+group by year, state
 ) a
 inner join `hcc_prevalence.mcaid_chip_annual_enroll` b
 on a.year=b.year
 and a.state=b.state_abbrev
 )
 UNPIVOT(value FOR attribute IN ( BENES_FFS_CNT,BENES_MA_CNT, tot_chip, tot_mcaid)
-) ;;
+)  ;;
   }
 
   dimension: year {
