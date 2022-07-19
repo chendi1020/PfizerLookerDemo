@@ -19,6 +19,7 @@ UNPIVOT(value FOR attribute IN ( BENES_FFS_CNT,BENES_MA_CNT, tot_chip, tot_mcaid
 
   dimension: year {
     type: number
+    value_format: "0"
     sql: ${TABLE}.year ;;
   }
 
@@ -32,6 +33,7 @@ UNPIVOT(value FOR attribute IN ( BENES_FFS_CNT,BENES_MA_CNT, tot_chip, tot_mcaid
   dimension: attribute {
     type: string
     sql: ${TABLE}.attribute ;;
+    order_by_field: attribute_order
   }
 
   dimension: value {
@@ -47,7 +49,20 @@ UNPIVOT(value FOR attribute IN ( BENES_FFS_CNT,BENES_MA_CNT, tot_chip, tot_mcaid
     when ${attribute}="tot_mcaid" then "Medicaid"
     end
     ;;
+    order_by_field: attribute_order
   }
+
+  dimension: attribute_order {
+    type: number
+    sql: case when ${attribute}="BENES_FFS_CNT" then 1
+          when ${attribute}="BENES_MA_CNT" then 2
+          when ${attribute}="tot_chip" then 3
+          when ${attribute}="tot_mcaid" then 0
+          end
+          ;;
+
+  }
+
 
   measure: value_sum {
     type: sum
