@@ -1,51 +1,81 @@
-<h1><span style="color:#2d7eea">README - Your LookML Project</span></h1>
+# Pfizer Looker Demo — Healthcare Analytics
 
-<h2><span style="color:#2d7eea">LookML Overview</span></h2>
+A LookML project for analyzing Medicare and Medicaid healthcare utilization, disease prevalence (HCC), expenditures, and enrollment trends across US states and counties.
 
-LookML is a data modeling language for describing dimensions, fields, aggregates and relationships based on SQL.
+## Tech Stack
 
-LookML is powerful because it:
+- **LookML** — Looker data modeling language
+- **Google BigQuery** — data warehouse (`dil-demo-352614.hcc_prevalence`)
+- **Looker** — BI/visualization platform
 
-- **Is all about reusability**: Most data analysis requires the same work to be done over and over again. You extract
-raw data, prepare it, deliver an analysis... and then are never able touse any of that work again. This is hugely
-inefficient, since the next analysis often involves many of the same steps. With LookML, once you define a
-dimension or a measure, you continue to build on it, rather than having to rewrite it again and again.
-- **Empowers end users**:  The data model that data analysts and developers create in LookML condenses and
-encapsulates the complexity of SQL, it and lets analysts get the knowledge about what their data means out of
-their heads so others can use it. This enables non-technical users to do their jobs &mdash; building dashboards,
-drilling to row-level detail, and accessing complex metrics &mdash; without having to worry about what’s behind the curtain.
-- **Allows for data governance**: By defining business metrics in LookML, you can ensure that Looker is always a
-credible single source of truth.
+## Project Structure
 
-The Looker application uses a model written in LookML to construct SQL queries against a particular database that
-business analysts can [Explore](https://docs.looker.com/r/exploring-data) on. For an overview on the basics of LookML, see [What is LookML?](https://docs.looker.com/r/what-is-lookml)
+```
+models/
+  pfizer_demo.model.lkml        # Main model — defines explores and joins
+views/
+  hcc_all.view.lkml             # All HCC conditions (union of 8 clinical cohorts)
+  hcc_85.view.lkml              # HCC 85 — Congestive Heart Failure
+  hcc_18.view.lkml              # HCC 18 — Diabetes
+  hcc_111.view.lkml             # HCC 111 — COPD
+  hcc_by_county.view.lkml       # County-level HCC prevalence
+  hcc_by_state.view.lkml        # State-level HCC prevalence
+  hcc_by_county_diabetes.view.lkml
+  hcc_by_state_diabetes.view.lkml
+  geo_puf.view.lkml             # Medicare Geographic PUF (unpivoted)
+  geo_puf_wide.view.lkml        # Geographic PUF (wide format, 25+ metrics)
+  geo_puf_wide_select.view.lkml # Curated subset of geographic metrics
+  betos.view.lkml               # BETOS procedure classification
+  state_by_payer_19.view.lkml   # Payer analysis by state
+  enrollment_mcaid_mcare.view.lkml  # Medicare & Medicaid enrollment
+  SSP_EXP_RS.view.lkml          # Shared Savings Program expenditure & risk scores
+  proc_by_county_18.view.lkml   # Procedures by county
+  State_County_List.view.lkml   # State/county master list with dashboard nav links
+```
 
-<h2><span style="color:#2d7eea">Learn to Speak Looker</span></h2>
-R
-A LookML project is a collection of LookML files that describes a set of related [views](https://docs.looker.com/r/terms/view-file), [models](https://docs.looker.com/r/terms/model-file), and [Explores](https://docs.looker.com/r/terms/explore).
-- A [view](https://docs.looker.com/r/terms/view-file) (.view files) contains information about how to access or calculate information from each table (or
-across multiple joined tables). Here you’ll typically define the view, its dimensions and measures, and its field sets.
-- A [model](https://docs.looker.com/r/terms/model-file) (.model file) contains information about which tables to use and how they should be joined together.
-Here you’ll typically define the model, its Explores, and its joins.
-- An [Explore](https://docs.looker.com/r/terms/explore) is the starting point for business users to query data, and it is the end result of the LookML you are
-writing. To see the Explores in this project, select an Explore from the Explore menu.
+## Explores
 
-<h2><span style="color:#2d7eea">Exploring Data</span></h2>
+| Explore | Description |
+|---------|-------------|
+| **diabetes** | Diabetes-focused analysis joined with county/state prevalence, procedures, and geographic metrics |
+| **geo_puf_wide** | Geographic healthcare utilization and cost metrics |
+| **hcc_all** | Comprehensive HCC analysis across multiple condition categories |
+| **betos** | Procedure categories (Berenson-Eggers Type of Service) |
+| **ssp_exp_rs** | Shared Savings Program — expenditure benchmarks and risk scores |
+| **enrollment_mcaid_mcare** | Medicare and Medicaid/CHIP enrollment trends |
 
-Ad-hoc data discovery is one of Looker’s most powerful and unique features. As you evaluate use cases for your
-trial, consider what business areas you would like to explore. Open the Explore menu in the main navigation to see
-the Explores you are building.
+## Key Metrics
 
-<h2><span style="color:#2d7eea">The Development Workflow</span></h2>
+- **HCC Prevalence** — disease cases per 1,000 beneficiaries
+- **HCC Risk Scores** — average risk score by condition
+- **Service Utilization** — hospital, ER, imaging, SNF, and other service rates per 1,000 beneficiaries
+- **Standardized Payments** — geographically adjusted payment amounts
+- **SSP Assignment & Expenditure** — ACO assignment rates and per-capita expenditure
+- **Procedure Prevalence** — beneficiary and line-level procedure rates
 
-To support a multi-developer environment, Looker is integrated with Git for version control. Follow [these directions](https://docs.looker.com/r/develop/git-setup)
-to set up Git for your project. To edit LookML, expand the Develop drop-down and toggle on [Development Mode](https://docs.looker.com/r/terms/dev-mode). In
-Development Mode, changes you make to the LookML model exist only in your account until you commit the
-changes and push them to your production model.
+## Clinical Cohorts (HCC)
 
-<h2><span style="color:#2d7eea">Additional Resources</span></h2>
+The `hcc_all` view unions data across these cohorts:
 
-To learn more about LookML and how to develop visit:
-- [Looker User Guide](https://looker.com/guide)
-- [Looker Help Center](https://help.looker.com)
-- [Looker University](https://training.looker.com/)
+- Overall conditions
+- Oncology
+- Cardiovascular & Metabolic Disorders
+- Neurological Disorders
+- Immune and Inflammatory Disorders
+- COPD (HCC 111)
+- Diabetes (HCC 18)
+- Congestive Heart Failure (HCC 85)
+
+## Dashboards
+
+The project links to three dashboard pages via `State_County_List`:
+
+1. **Population Health**
+2. **Value-based Care**
+3. **SDOH Equity**
+
+## Data Notes
+
+- Geographic mapping uses US FIPS codes for state and county-level maps
+- Puerto Rico is excluded from BETOS and SSP explores
+- Cache policy: 1-hour datagroup (`pfizer_demo_default_datagroup`)
